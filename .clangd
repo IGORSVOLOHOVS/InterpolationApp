@@ -1,0 +1,7 @@
+CompileFlags:
+  Add: [-std=c++23, -Wall, -Wextra, -Wpedantic, -Werror]
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+Style:
+  FullyQualifiedNames: false

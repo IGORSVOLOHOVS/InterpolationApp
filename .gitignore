@@ -1,0 +1,71 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# CMake
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+Makefile
+build/
+build*/
+*.cmake
+!CMakeLists.txt
+
+# Qt
+.qmake.stash
+*.qmlc
+*.jsc
+Makefile*
+*moc_*.cpp
+*ui_*.h
+
+# VS Code
+.vscode/
+
+# Clangd
+.cache/
+compile_commands.json
+
+# Doxygen
+docs/html/
+docs/latex/
+*.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*~
+
+# Application specific artifacts
+benchmark_results_optimized.html
+
+build_*.txt
+config_*.log
+config_*.txt
+tests.log
