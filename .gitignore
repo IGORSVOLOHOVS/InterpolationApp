@@ -69,3 +69,4 @@ build_*.txt
 config_*.log
 config_*.txt
 tests.log
+.env
