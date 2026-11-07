@@ -1,7 +1,10 @@
-#pragma once
+#ifndef INTERPOLATION_APP_APPLICATION_INTERPOLATION_SERVICE_H
+#define INTERPOLATION_APP_APPLICATION_INTERPOLATION_SERVICE_H
 
-#include <vector>
 #include <expected>
+#include <utility>
+#include <vector>
+
 #include "Domain/Model/Point.h"
 #include "Domain/Ports/Interpolator.h"
 
@@ -29,7 +32,8 @@ public:
      * @param steps Desired number of interpolated points.
      * @return Resulting points or domain error.
      */
-    [[nodiscard]] std::expected<std::vector<Point>, DomainError> execute(const std::vector<Point>& points, int steps) const {
+    [[nodiscard]] std::expected<std::vector<Point>, DomainError> execute(const std::vector<Point>& points,
+                                                                         int steps) const {
         return strategy_.interpolate(points, steps);
     }
 
@@ -37,4 +41,6 @@ private:
     T strategy_;
 };
 
-} // namespace Application::UseCases
+}  // namespace Application::UseCases
+
+#endif  // INTERPOLATION_APP_APPLICATION_INTERPOLATION_SERVICE_H
