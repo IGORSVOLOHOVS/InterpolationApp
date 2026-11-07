@@ -1,5 +1,5 @@
 Language: Cpp
-Standard: c++23
+Standard: Latest
 BasedOnStyle: Google
 ColumnLimit: 120
 IndentWidth: 4

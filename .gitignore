@@ -1,72 +1,32 @@
-# Prerequisites
-*.d
+# Built, fetched and scratch - only ever at the root
+/dist/
+/build/
+/out/
+/tmp/
+/.venv/
+/.coverage
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# What the tools cache, wherever they run
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Prompt text, and one person's Claude Code settings
+.claude/logs/
+.claude/settings.local.json
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# No .env line: .claude/.env holds the keys and is committed on purpose (R-02).
+# DEVIATION from the line above, decided by the repository owner: no key is
+# ever committed, so .claude/.env is ignored here. Rule 4 of CLAUDE.md is
+# where that reversal is written down.
+.claude/.env
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# CMake
-cmake_install.cmake
-CMakeCache.txt
-CMakeFiles/
-Makefile
-build/
-build*/
-*.cmake
-!CMakeLists.txt
-
-# Qt
-.qmake.stash
-*.qmlc
-*.jsc
-Makefile*
-*moc_*.cpp
-*ui_*.h
-
-# VS Code
-.vscode/
-
-# Clangd
-.cache/
+# What this repository writes, kept from before the lab
+benchmark_results_optimized.html
 compile_commands.json
-
-# Doxygen
+.cache/
 docs/html/
 docs/latex/
-*.db
-
-# OS generated files
-.DS_Store
-Thumbs.db
-*~
-
-# Application specific artifacts
-benchmark_results_optimized.html
-
-build_*.txt
-config_*.log
-config_*.txt
-tests.log
 .env
