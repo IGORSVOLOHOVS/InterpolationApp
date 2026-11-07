@@ -33,3 +33,7 @@ src/
 `.\recipe.ps1 test` builds the core, runs `ctest`, `clang-tidy` and `clang-format`, and searches `src/Domain`, `src/Application` and `src/Infrastructure` for locks and for `throw`, `try` and `catch`. It needs mingw g++, cmake, ninja and LLVM, and no Qt: it configures with `-DINTERPOLATION_APP_WINDOW=OFF`. `docs/install.md` has the details, and `docs/manual.md` covers the benchmarks and the window.
 
 Doxygen builds the API pages from `Doxyfile`. MIT licensed.
+
+## Lab requirements
+
+This repository complies with [revision 4.0.0](http://127.0.0.1:3000/igors-lab/software-requirements/src/tag/v4.0.0/BEST_REQUIREMENTS.md) of the lab requirements, except R-02 (#8), R-09 (#9), R-12 (#10), R-13 (#11), R-14 (#12), R-17 (#13), R-41 (#14), R-42 (#15).
