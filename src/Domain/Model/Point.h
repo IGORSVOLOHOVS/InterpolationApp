@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INTERPOLATION_APP_DOMAIN_POINT_H
+#define INTERPOLATION_APP_DOMAIN_POINT_H
 
 #include <compare>
 #include <concepts>
@@ -14,7 +15,7 @@ namespace Domain::Model {
 struct Coord {
     /// The coordinate value.
     double value;
-    
+
     /// Default spaceship operator for easy comparison.
     auto operator<=>(const Coord&) const = default;
 };
@@ -28,9 +29,11 @@ struct Point {
     Coord x;
     /// Y coordinate.
     Coord y;
-    
+
     /// Default spaceship operator for lexicographical comparison.
     auto operator<=>(const Point&) const = default;
 };
 
-} // namespace Domain::Model
+}  // namespace Domain::Model
+
+#endif  // INTERPOLATION_APP_DOMAIN_POINT_H

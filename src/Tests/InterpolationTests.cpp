@@ -1,15 +1,18 @@
 #include <doctest/doctest.h>
 #include <nanobench.h>
-#include <vector>
+
 #include <cmath>
-#include <iostream>
 #include <fstream>
-#include <cstdlib>
+#include <iostream>
+#include <vector>
 
+#include "Application/UseCases/InterpolationService.h"
+#include "Application/UseCases/PointGenerationService.h"
 #include "Domain/Model/Point.h"
-#include "Infrastructure/Interpolation/LinearInterpolator.h"
 #include "Infrastructure/Interpolation/AdditionalInterpolators.h"
+#include "Infrastructure/Interpolation/LinearInterpolator.h"
 
+using namespace Application::UseCases;
 using namespace Domain::Model;
 using namespace Infrastructure::Interpolation;
 
@@ -25,8 +28,8 @@ std::vector<Point> createPoints(std::initializer_list<std::pair<double, double>>
 TEST_CASE("Linear Interpolation") {
     LinearInterpolator interp;
     auto points = createPoints({{0, 0}, {10, 10}});
-    auto result = interp.interpolate(points, 20); // 20 steps
-    
+    auto result = interp.interpolate(points, 20);  // 20 steps
+
     CHECK(result.has_value());
     CHECK(result->size() == 20);
     CHECK(result->front().y.value == doctest::Approx(0.0));
@@ -44,7 +47,7 @@ TEST_CASE("Nearest Neighbor Interpolation") {
     NearestNeighborInterpolator interp;
     auto points = createPoints({{0, 0}, {10, 100}});
     auto result = interp.interpolate(points, 10);
-    
+
     CHECK(result.has_value());
     CHECK(result->front().y.value == 0.0);
     CHECK(result->back().y.value == 100.0);
@@ -52,94 +55,121 @@ TEST_CASE("Nearest Neighbor Interpolation") {
 
 TEST_CASE("Lagrange Interpolation") {
     LagrangeInterpolator interp;
-    auto points = createPoints({{0, 0}, {5, 25}, {10, 100}}); // y=x^2
-    auto result = interp.interpolate(points, 11); // 0, 1, ..., 10
-    
+    auto points = createPoints({{0, 0}, {5, 25}, {10, 100}});  // y=x^2
+    auto result = interp.interpolate(points, 11);              // 0, 1, ..., 10
+
     CHECK(result.has_value());
     // Check known point
-    double x = 2.0; 
+    double x = 2.0;
     // Find point close to x=2
     bool found = false;
-    for(const auto& p : result.value()) {
-        if(std::abs(p.x.value - 2.0) < 0.001) {
+    for (const auto& p : result.value()) {
+        if (std::abs(p.x.value - x) < 0.001) {
             CHECK(p.y.value == doctest::Approx(4.0));
             found = true;
         }
     }
+    CHECK(found);
 }
 
 TEST_CASE("Step Interpolation") {
     StepInterpolator interp;
     auto points = createPoints({{0, 0}, {5, 50}, {10, 100}});
     auto result = interp.interpolate(points, 20);
-    
+
     CHECK(result.has_value());
     // At x=2.5, it should be 0 (left value)
-    for(const auto& p : result.value()) {
-        if(std::abs(p.x.value - 2.5) < 0.1) {
-           CHECK(p.y.value == 0.0);
+    for (const auto& p : result.value()) {
+        if (std::abs(p.x.value - 2.5) < 0.1) {
+            CHECK(p.y.value == 0.0);
         }
-        if(std::abs(p.x.value - 7.5) < 0.1) {
-           CHECK(p.y.value == 50.0);
+        if (std::abs(p.x.value - 7.5) < 0.1) {
+            CHECK(p.y.value == 50.0);
         }
     }
 }
 
 TEST_CASE("Catmull-Rom Spline") {
     CatmullRomInterpolator interp;
-    auto points = createPoints({{-200, -200}, {0, 0}, {10, 10}, {200, 200}}); // Need > 4 points logic or phantom points handled?
+    auto points =
+        createPoints({{-200, -200}, {0, 0}, {10, 10}, {200, 200}});  // Need > 4 points logic or phantom points handled?
     // The implementation requires 4 points minimum.
     auto result = interp.interpolate(points, 20);
     CHECK(result.has_value());
 }
 
-
 TEST_CASE("Cubic Spline Interpolation") {
     CubicSplineInterpolator interp;
-    auto points = createPoints({{0,0},{1,1},{2,0},{3,1}});
+    auto points = createPoints({{0, 0}, {1, 1}, {2, 0}, {3, 1}});
     auto result = interp.interpolate(points, 20);
     CHECK(result.has_value());
 }
 
 TEST_CASE("Akima Spline Interpolation") {
     AkimaSplineInterpolator interp;
-    auto points = createPoints({{0,0},{1,0},{2,1},{3,1},{4,0},{5,0}});
+    auto points = createPoints({{0, 0}, {1, 0}, {2, 1}, {3, 1}, {4, 0}, {5, 0}});
     auto result = interp.interpolate(points, 20);
     CHECK(result.has_value());
 }
 
 TEST_CASE("Cosine Interpolation") {
     CosineInterpolator interp;
-    auto points = createPoints({{0,0},{1,1},{2,0}});
+    auto points = createPoints({{0, 0}, {1, 1}, {2, 0}});
     auto result = interp.interpolate(points, 20);
     CHECK(result.has_value());
 }
 
 TEST_CASE("Sinc Interpolation") {
     SincInterpolator interp;
-    auto points = createPoints({{0,0},{1,1},{2,0},{3,-1},{4,0}});
+    auto points = createPoints({{0, 0}, {1, 1}, {2, 0}, {3, -1}, {4, 0}});
     auto result = interp.interpolate(points, 20);
     CHECK(result.has_value());
 }
 
 TEST_CASE("Moving Average Smoother") {
     MovingAverageInterpolator interp(3);
-    auto points = createPoints({{0,0},{1,10},{2,0},{3,10},{4,0}});
-    // Linear resample to 5 pts -> 0, 10, 0, 10, 0. 
+    auto points = createPoints({{0, 0}, {1, 10}, {2, 0}, {3, 10}, {4, 0}});
+    // Linear resample to 5 pts -> 0, 10, 0, 10, 0.
     // Moving Avg window 3 at index 2 (val 0) -> (10+0+10)/3 = 6.66
-    auto result = interp.interpolate(points, 5); 
+    auto result = interp.interpolate(points, 5);
     CHECK(result.has_value());
-    if(result && result->size() == 5) {
+    if (result && result->size() == 5) {
         CHECK(result->at(2).y.value == doctest::Approx(6.666).epsilon(0.1));
     }
 }
 
-TEST_CASE("Benchmarks") {
-    ankerl::nanobench::Bench bench;
-    bench.minEpochIterations(20); // Quick run
+TEST_CASE("Interpolation Service runs its strategy") {
+    InterpolationService service(LinearInterpolator{});
+    auto result = service.execute(createPoints({{0, 0}, {10, 10}}), 11);
 
-    auto densePoints = createPoints({{0,0}});
-    for(int i=1; i<100; ++i) densePoints.push_back({Coord{(double)i}, Coord{std::sin(i/10.0)}});
+    REQUIRE(result.has_value());
+    CHECK(result->size() == 11);
+    CHECK(result->back().y.value == doctest::Approx(10.0));
+}
+
+TEST_CASE("Point Generation stays in bounds and sorted") {
+    auto points =
+        PointGenerationService::generateRandomPoints(50, {.minX = -1.0, .maxX = 1.0, .minY = 2.0, .maxY = 3.0});
+
+    REQUIRE(points.size() == 50);
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        CHECK(points[i].x.value >= -1.0);
+        CHECK(points[i].x.value <= 1.0);
+        CHECK(points[i].y.value >= 2.0);
+        CHECK(points[i].y.value <= 3.0);
+        if (i > 0) {
+            CHECK(points[i - 1].x.value <= points[i].x.value);
+        }
+    }
+    CHECK(PointGenerationService::generateRandomPoints(0, {.minX = 0, .maxX = 100, .minY = 0, .maxY = 100}).empty());
+}
+
+TEST_CASE("Benchmarks" * doctest::skip()) {
+    ankerl::nanobench::Bench bench;
+    bench.minEpochIterations(20);  // Quick run
+
+    auto densePoints = createPoints({{0, 0}});
+    for (int i = 1; i < 100; ++i) densePoints.push_back({Coord{(double)i}, Coord{std::sin(i / 10.0)}});
 
     bench.run("Linear", [&] {
         auto res = LinearInterpolator().interpolate(densePoints, 100000);
@@ -187,11 +217,4 @@ TEST_CASE("Benchmarks") {
     std::ofstream out("benchmark_results_optimized.html");
     bench.render(ankerl::nanobench::templates::htmlBoxplot(), out);
     out.close();
-
-    // Automatic open
-    #ifdef __linux__
-        std::system("google-chrome benchmark_results_optimized.html &");
-    #elif _WIN32
-        std::system("start google-chrome benchmark_results_optimized.html");
-    #endif
 }

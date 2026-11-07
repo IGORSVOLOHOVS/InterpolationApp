@@ -1,0 +1,10 @@
+Checks: >-
+  -*,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  portability-*
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*[/\\]src[/\\](Domain|Application|Infrastructure)[/\\].*'
+ExtraArgs: ['--target=x86_64-w64-mingw32']
