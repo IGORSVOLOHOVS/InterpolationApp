@@ -4,6 +4,30 @@ Reverse-engineered on 2026-11-18 from commit `5670e81`. Every requirement descri
 behaviour present in the code at that commit; sources are `path:line`. Claims found only
 in prose are listed in §3.8. Documentation hub: [`docs/README.md`](docs/README.md).
 
+<!-- jira-sync:start -->
+Jira: KAN-113
+
+## Tasks
+
+This list is one ticket in Jira project KAN, [KAN-113](https://igorsvolohovs.atlassian.net/browse/KAN-113). Each line is a checkbox there: tick it in Jira and the sync ticks it here; add a checkbox there and it is appended here. Done items are the features described in section 3; open items are what the project declares but the code does not do yet.
+
+- [x] Domain and contract (section 3.1) <!-- spec-domain-and-contract -->
+- [x] Shared resampling rule (section 3.2) <!-- spec-shared-resampling-rule -->
+- [x] Strategies (section 3.3) <!-- spec-strategies -->
+- [x] Point generation (section 3.4) <!-- spec-point-generation -->
+- [x] Desktop window (section 3.5) <!-- spec-desktop-window -->
+- [x] Tests, benchmarks, documentation (section 3.6) <!-- spec-tests-benchmarks-documentation -->
+- [x] Shared tooling (section 3.7) <!-- spec-shared-tooling -->
+- [ ] "Sinc (Lanczos)" (declared, not implemented) <!-- spec-sinc-lanczos -->
+- [ ] "`constexpr` validation" (declared, not implemented) <!-- spec-constexpr-validation -->
+- [ ] "Status: Verified" badge (declared, not implemented) <!-- spec-status-verified-badge -->
+- [ ] Catmull-Rom "phantom points" (declared, not implemented) <!-- spec-catmull-rom-phantom-points -->
+- [ ] Full Akima boundary handling ("Standard Akima uses extra estimated points") (declared, not implemented) <!-- spec-full-akima-boundary-handling-standard-akima-uses-e -->
+- [ ] "Zero-Cost Abstractions … no runtime overhead" (declared, not implemented) <!-- spec-zero-cost-abstractions-no-runtime-overhead -->
+- [ ] Further sources (declared, not implemented) <!-- spec-further-sources -->
+
+<!-- jira-sync:end -->
+
 ## 1. Purpose and scope
 
 InterpolationApp generates random 2D points, resamples them with one of ten
